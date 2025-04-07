@@ -1,1 +1,105 @@
-console.log 'Testando VSC web'
+using System.Runtime.CompilerServices;
+using System.Threading.Channels;
+using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace Calculado
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Boolean restart = false;
+            int resultado;
+            int num = new int();
+            int op = new int();
+            int tijm = 40;
+            int tijc = 350;
+
+            do
+            {
+                Console.WriteLine("Qual calculo deseja realizar? \n");
+                Console.WriteLine("1 - Calculo de area construida com tijolos disponiveis \n");
+                Console.WriteLine("2 - Calculo de tijolos necessarios para uma area determinada \n");
+                Console.WriteLine("3 - Calculo de cimento necessario para uma quantidade de tijolos \n");
+
+                int opcoes = int.Parse(Console.ReadLine());
+                
+                if (opcoes == 1)
+                {
+                    Console.WriteLine("\nInsira o numero de tijolos\n");
+                    num = int.Parse(Console.ReadLine());
+                    opcoes = 1;
+                }
+                else if (opcoes == 2)
+                {
+                    Console.WriteLine("\nInsira a area disponivel\n");
+                    num = int.Parse(Console.ReadLine());
+                    opcoes = 2;
+                }
+                else if (opcoes == 3)
+                {
+                    Console.WriteLine("\nInsira o numero de tijolos da construção\n");
+                    num = int.Parse(Console.ReadLine());
+                    opcoes = 3;
+                }
+                switch (opcoes)
+                {
+                    case 1:
+                        Console.WriteLine("\nÉ possivel construir até " + Areatijolo(num, tijm) + " m² " + " com essa quantidade de tijolos ");
+                        break;
+                    case 2:
+                        Console.WriteLine("\nAproximadamente " + Tijoloarea(num, tijm) + " tijolos são necessarios para construir nesse espaço ");
+                        break;
+                    case 3:
+                        if (Cimento(num, tijc) > 1)
+                        {
+                            Console.WriteLine("\nÉ necessario cerca de " + Cimento(num, tijc) + " saco de cimento para realizar a obra ");
+                        }
+                        else
+                        {
+                            resultado = 1;
+                            Console.WriteLine("\nÉ necessario cerca de " + resultado + " sacos de cimento para realizar a obra ");
+                        }
+                        break;
+                }
+                Console.WriteLine("\nDeseja fazer um novo calculo? y/n\n");
+                String resposta = Console.ReadLine();
+                if (resposta == "n")
+                {
+                    Console.WriteLine("\nObrigado por usar!\n");
+                    Task.Delay(2000).Wait();
+                    Environment.Exit(0);
+                }
+                else if (resposta == "y")
+                {
+                  restart = false;
+                }
+                else
+                {
+                    Console.WriteLine("\nResposta Invalida, fechando aplicativo");
+                    Task.Delay(2000).Wait();
+                    Environment.Exit(0);
+                }
+            } while (restart == false);
+        }
+        public static int Areatijolo(int tijolod, int tijm)
+        {
+            int result = tijolod / tijm;
+            return result;
+        }
+        public static int Tijoloarea(int area, int tijm)
+        {
+            int result = area * tijm;
+            return result;
+        }
+        public static int Cimento(int tijoloc, int tijc)
+        {
+            int result = tijoloc / tijc;
+            return result;
+        }
+    }
+}
+
+
+
